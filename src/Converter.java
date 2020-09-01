@@ -19,9 +19,11 @@ public class Converter {
                 String line = inputFileScanner.nextLine();
                 String[] lineSplit = line.split(Constant.SEMICOLON);
                 Person person = new Person(lineSplit);
+                long pos = binaryFileScanner.getFilePointer();
 
-                System.out.print(person.getRg() + " inserted in " + binaryFileScanner.getFilePointer() + " position.");
                 person.saveToFile(binaryFileScanner);
+                Person.put(person.getRg(), pos);
+                System.out.println(person.getRg() + " inserted in " + pos + " position.");
 
                 counter++;
             }
@@ -30,7 +32,6 @@ public class Converter {
             binaryFileScanner.seek(0);
             binaryFileScanner.writeInt(counter);
             binaryFileScanner.close();
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

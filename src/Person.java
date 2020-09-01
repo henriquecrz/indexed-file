@@ -1,10 +1,13 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Person {
     private int _rg;
     private String _name;
     private String _birthday;
+    private static Map<Integer, Long> _addresses = new HashMap<Integer, Long>();
 
     public Person(int rg, String name, String birthday) {
         this._rg = rg;
@@ -30,9 +33,19 @@ public class Person {
         return this._birthday;
     }
 
+    public static void put(int rg, long address) {
+        if (!_addresses.containsKey(rg)) {
+            _addresses.put(rg, address);
+        }
+    }
+
+    public static long get(int rg) {
+        return _addresses.containsKey(rg) ? _addresses.get(rg) : null;
+    }
+
     @Override
     public String toString() {
-        return "Person\n------\nRG: " + getRg() + "\nName: " + getName() + "\nBirthday: " + getBirthday();
+        return "\nPerson\n------\nRG: " + getRg() + "\nName: " + getName() + "\nBirthday: " + getBirthday() + "\n";
     }
 
     public void saveToFile(RandomAccessFile file) throws IOException {

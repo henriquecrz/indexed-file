@@ -12,10 +12,9 @@ public class Main {
 
         try {
             RandomAccessFile binaryFile = new RandomAccessFile(new File(Path.BINARY_FILE), Constant.ACCESS_MODE);
-
-            System.out.println("People amount: " + binaryFile.readInt());
-
             String input = Constant.EMPTY_STRING;
+
+            System.out.println("People amount: " + binaryFile.readInt() + "\n");
 
             do {
                 menu();
@@ -23,9 +22,19 @@ public class Main {
                 input = keyboard.nextLine().trim().toLowerCase();
 
                 try {
+                    long start = System.currentTimeMillis();
                     Person person = Person.getPerson(binaryFile, Integer.parseInt(input));
+                    long end = System.currentTimeMillis();
 
-                    System.out.println(person != null ? person : Constant.PERSON_NOT_FOUND_MESSAGE); // toString() ?
+                    System.out.println(person != null ? person : Constant.PERSON_NOT_FOUND_MESSAGE);
+                    System.out.println(String.format("Search time: %.3f seconds.", (end - start) / 1000.0));
+
+                    start = System.currentTimeMillis();
+                    person = Person.getPerson(binaryFile, Person.get(Integer.parseInt(input)));
+                    end = System.currentTimeMillis();
+
+                    System.out.println(person != null ? person : Constant.PERSON_NOT_FOUND_MESSAGE);
+                    System.out.println(String.format("Search time: %.3f seconds.", (end - start) / 1000.0));
                 } catch (NumberFormatException e) {
                     System.out.println(input.equals(Command.QUIT) ? "Exiting..." : e.getMessage());
                 }
